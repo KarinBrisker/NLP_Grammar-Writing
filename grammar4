@@ -1,0 +1,142 @@
+# Symbols in the grammar are case-sensitive.
+#
+# This grammar uses a convention that
+#    - terminals are lowercase          (president)
+#    - preterminals are capitalized     (Noun)
+#    - other nonterminals are all-caps  (NP)
+#
+# This convention just makes grammars more readable to humans.  Thus:
+#
+#    - When *you* are writing grammars, you should
+#      follow this convention unless you have a good reason not to.
+#
+#    - But the  *program* should still work with grammars that don't
+#      follow this convention.  So how can the program reliably tell
+#      the difference between terminal and nonterminal symbols?  If
+#      there is at least one rule for rewriting a symbol, then that
+#      symbol is a nonterminal and should be rewritten.
+#######################
+
+# Rules for creating full sentences.
+
+2	ROOT	S .
+2	ROOT	S !
+1	ROOT	is it true that S ?     # mixing terminals and nonterminals is ok.
+5	ROOT	QUEST ?
+
+# The basic grammar rules.  Here's what the abbreviations stand for:
+#    S  = sentence
+#    NP = noun phrase
+#    VP = verb phrase
+#    PP = prepositional phrase
+#    Det = determiner (sometimes called "article")
+#    Prep = preposition
+#    Adj = adjective
+
+1   SBAR    COMP S #NEW
+
+1	S	NP VP
+3   S   NP Verb #NEW
+1   S   PRP VP #NEW
+
+2	NP	NNP #new
+1	VP	Verb NP
+4	NP	Det Noun
+1	NP	NP PP
+1   NP  NP CC NP #new
+
+1	PP	Prep NP
+3	Noun	Adj Noun
+
+2   VP  Vi #NEW
+2   VP  Vt NP #NEW
+1   VP  Vd NP NP #NEW
+1   VP  VP CC VP #new
+1   VP  Verb CC VP #NEW
+1   VP  V5 SBAR #NEW
+1   VP  V6 NP SBAR #NEW
+2   VP  VBZ Adj #NEW
+1   VP  VBZ VP #NEW
+1   VP  VBZ NP #NEW
+1   VP  V_pre_pp PP #NEW
+
+1	VP	progresive_verb
+1	VP	present_verb NP
+1	QUEST	past_quest NNP present_verb NP
+3	QUEST	future_quest NNP present_verb NP
+1	QUEST	progresive_quest NNP progresive_verb
+3	QUEST	singular_quest NNP progresive_verb
+2	QUEST	plural_quest NN progresive_verb
+2   QUEST   progresive_quest PRP Adj
+
+
+1	past_quest did
+1	future_quest will
+1	progresive_quest is
+1	plural_quest were
+1	singular_quest	was
+1	singular_quest does
+1	plural_quest	do
+
+
+1	NNP	he
+1	NNP	she
+1	NN	they
+
+1	present_verb eat
+1	present_verb play
+1	present_verb dance
+1	present_verb think
+1	progresive_verb eating
+1   progresive_verb playing
+1   progresive_verb thinking
+1   progresive_verb kissing
+
+
+# Vocabulary.  Your program can see that "ate" is a terminal
+# symbol because there exists no rule for rewriting it.
+# Any symbol that can rewrite as a terminal (or a string of
+# terminals, like "chief of staff") is called a "preterminal."  Notice
+# that a preterminal is a special kind of nonterminal.
+
+1   NNP     Sally #new
+1   COMT    that #new
+3	Verb	ate
+2	Verb	wanted
+2	Verb	kissed
+1	VBZ     is #NEW
+1	Verb	understood
+1	Verb	pickled
+1   Vi    sighed #NEW
+1   V_pre_pp    worked #NEW
+1   V5    thought #NEW
+1	V6	perplexed #NEW
+1   Vt     eating #NEW
+
+1	Det	the
+1	Det	a
+1	Det	every
+
+1   CC      and #NEW
+
+1	Noun	president
+1	Noun	sandwich
+1	Noun	pickle
+1	Noun	chief of staff
+1	Noun	floor
+1	Noun	proposal #new
+1	Noun	desk #new
+
+1	Adj	fine
+1	Adj	delicious
+1	Adj	perplexed
+1	Adj	pickled
+1	Adj	very #new
+1   Adj lazy  #new
+
+2	Prep	with
+2	Prep	on
+1	Prep	under
+2	Prep	in
+
+1   PRP     it #NEW
